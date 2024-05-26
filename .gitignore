@@ -206,5 +206,7 @@ upload-data.py
 *.DS_Store
 week1-introduction/models/*.bin
 data/*.*
-
-
+*/mlflow.db
+models
+mlruns
+week2-experiment-tracking/output/*.*
