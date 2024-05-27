@@ -31,35 +31,39 @@ Run mlflow with below command.
 ```
 mlflow ui --backend-store-uri sqlite:///mlflow.db
 ```
-
-## Homework 
-
-### Q1. Install MLflow
+## MLFlow experiment tracking
+Run the [script](./duration-prediction.ipynb) to understand how mlflow logging and experiment tracking (params, metrics etc) is done. 
+Below set of lines start an experiment. 
 ```
-mlflow --version
+import mlflow
+
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_experiment("nyc-taxi-experiment")
 ```
-I got below mlflow, version 2.13.0
 
-### Q2. Download and preprocess the data
-Execute below command
+All the information wrapper under the mflow start_run method can be tracked for various params and metrics as below
+
 ```
-python preprocess_data.py --raw_data_path ../data --dest_path ./output
+//anything under this method can be tracked
+with mlflow.start_run():
+    //set tagging to help with filtering
+    mlflow.set_tag("developer", "amohan")
+    //log params
+    mlflow.log_param("train-data-path", "./data/
+
+    alpha = 0.01
+    //log params
+    mlflow.log_param("alpha", alpha)
+
+    mlflow.log_metric("rmse", rmse)
 ```
-Four output files are generated
-dv.pkl,test.pkl,train.pkl,val.pkl
+All values of this experiment can be viewed in mlflow ui.
 
-### Q3. Train a model with autolog
-
-Modified [train.py](./train.py) script to add mlflow tracking.
-
-Execute script.
-``` 
-python train.py
+Model can be logged in two ways.In option 1 less information is stored compared to option 2. You can use the option 2 way to retrieve the model and run it later as a python function, or docker container, cloud envs, etc.
 ```
-You should see below comments
-2024/05/25 22:23:55 INFO mlflow.tracking.fluent: Experiment with name 'nyc-taxi-experiment-hw' does not exist. Creating a new experiment.
+mlflow.log_artifact("models/preprocessor.b", artifact_path="preprocessor")
 
+or 
 
-The training parameters in mlflow ui is ![here](./ml_flow_autologging_q3.png)
-
-min_samples_split used is 2
+mlflow.xgboost.log_model(booster, artifact_path="models_mlflow")
+```

@@ -8,7 +8,7 @@ from sklearn.metrics import root_mean_squared_error
 import mlflow
 mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_experiment("nyc-taxi-experiment-hw")
-mlflow.autolog()
+mlflow.sklearn.autolog()
 def load_pickle(filename: str):
     with open(filename, "rb") as f_in:
         return pickle.load(f_in)
@@ -22,16 +22,16 @@ def load_pickle(filename: str):
 )
 def run_train(data_path: str):
     
-    mlflow.set_tag("developer", "amohan")
-    X_train, y_train = load_pickle(os.path.join(data_path, "train.pkl"))
-    X_val, y_val = load_pickle(os.path.join(data_path, "val.pkl"))
+    with mlflow.start_run():
+        mlflow.set_tag("developer", "amohan")
+        X_train, y_train = load_pickle(os.path.join(data_path, "train.pkl"))
+        X_val, y_val = load_pickle(os.path.join(data_path, "val.pkl"))
 
-    rf = RandomForestRegressor(max_depth=10, random_state=0)
-    rf.fit(X_train, y_train)
-    y_pred = rf.predict(X_val)
-    rmse = root_mean_squared_error(y_val, y_pred)
-    mlflow.log_metric("rmse", rmse)
+        rf = RandomForestRegressor(max_depth=10, random_state=0)
+        rf.fit(X_train, y_train)
+        y_pred = rf.predict(X_val)
+        rmse = root_mean_squared_error(y_val, y_pred)
+        mlflow.log_metric("rmse", rmse)
 
 if __name__ == '__main__':
-    with mlflow.start_run():
-        run_train()
+    run_train()
