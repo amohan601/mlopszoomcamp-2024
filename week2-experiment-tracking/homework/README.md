@@ -72,7 +72,7 @@ Modify [register_model.py](./register_model.py) to get the best run and print th
 
 
 ```
-    best_run = client.search_runs(order_by=["metrics.rmse ASC"])[0]
+    best_run = client.search_runs(order_by=["metrics.test_rmse ASC"])[0]
     #Register the best model
     #mlflow.register_model( ... )
     #"runs:/<RUN_ID>/model"
@@ -88,7 +88,11 @@ python register_model.py
 ```
 
 Below output is received.
-
 ```
-{'training_mean_squared_error': 26.08294493276463, 'training_mean_absolute_error': 3.323916924052877, 'training_r2_score': 0.6796805248104354, 'training_root_mean_squared_error': 5.107146456952711, 'training_score': 0.6796805248104354, 'val_rmse': 5.3633599989832135, 'test_rmse': 5.5941605655803635}
+{'training_mean_squared_error': 24.785660360279664, 'training_mean_absolute_error': 3.23365652419934, 'training_r2_score': 0.6956122194293166, 'training_root_mean_squared_error': 4.978519896543516, 'training_score': 0.6956122194293166, 'val_rmse': 5.335419588556921, 'test_rmse': 5.567408012462019}
 ```
+Model is saved at
+```
+/path to homework folder>/artifacts/3/3c2ed2f4ac7f4212a626ff2d7bb948cb/artifacts/model
+```
+![here](./random_forest_best_model_q6.png)

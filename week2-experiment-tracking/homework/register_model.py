@@ -75,13 +75,13 @@ def run_register_model(data_path: str, top_n: int):
     # best_run = client.search_runs( ...  )[0]
     experiment = client.get_experiment_by_name(EXPERIMENT_NAME)
     best_run = client.search_runs( experiment_ids=experiment.experiment_id,
-                                  order_by=["metrics.rmse ASC"])[0]
+                                  order_by=["metrics.test_rmse ASC"])[0]
     #Register the best model
     #mlflow.register_model( ... )
     #"runs:/<RUN_ID>/model"
     run_id = best_run.info.run_id       
     result = mlflow.register_model(
-       f'runs:/{run_id}/random-forest-best-model', "random-forest-best-model-result"
+       f'runs://artifacts/{run_id}/random-forest-best-model', "random-forest-best-model-result"
     )
 
     print(best_run.data.metrics)
