@@ -212,3 +212,4 @@ week2-experiment-tracking/output/*.*
 week2-experiment-tracking/homework/output/*.*
 week2-experiment-tracking/homework/*.db
 week2-experiment-tracking/*.db
+week2-experiment-tracking/homework/artifacts/

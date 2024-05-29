@@ -3,6 +3,7 @@
 
 ## Homework 
 
+
 ### Q1. Install MLflow
 ```
 mlflow --version
@@ -62,5 +63,32 @@ Best rmse can be found in the ui by sorting rmse column
 
 ![here](./best_rmse_q4.png)
 
+![here](./log_objective_func_params_q5.png)
+
 
 ### Q6. Promote the best model to the model registry
+
+Modify [register_model.py](./register_model.py) to get the best run and print the rmse as below
+
+
+```
+    best_run = client.search_runs(order_by=["metrics.rmse ASC"])[0]
+    #Register the best model
+    #mlflow.register_model( ... )
+    #"runs:/<RUN_ID>/model"
+    run_id = best_run.info.run_id       
+    result = mlflow.register_model(
+       f'runs:/{run_id}/random-forest-best-model', "random-forest-best-model-result"
+    )
+    print(best_run.data.metrics)
+```
+Execute script as below
+```
+python register_model.py
+```
+
+Below output is received.
+
+```
+{'training_mean_squared_error': 26.08294493276463, 'training_mean_absolute_error': 3.323916924052877, 'training_r2_score': 0.6796805248104354, 'training_root_mean_squared_error': 5.107146456952711, 'training_score': 0.6796805248104354, 'val_rmse': 5.3633599989832135, 'test_rmse': 5.5941605655803635}
+```
